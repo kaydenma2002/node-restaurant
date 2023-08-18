@@ -1,6 +1,3 @@
-const https = require('https');
-const fs = require('fs');
-
 const express = require("express");
 const cors = require("cors");  // Import the cors package
 const app = express();
@@ -21,12 +18,6 @@ const db = mysql.createPool({
   database: "restaurant",
   port: "3306",
 });
-const httpsOptions = {
-  key: fs.readFileSync('domain.pem'),
-  cert: fs.readFileSync('certificate.pem')
-};
-const httpsServer = https.createServer(httpsOptions, app);
-
 const allowedOrigins = ["https://127.0.0.1:5173", "https://example2.com"];
 const corsOptions = {
   origin: allowedOrigins,  // Specify the allowed origin
@@ -84,6 +75,6 @@ app.get("/api/validate-token", (req, res) => {
   });
 });
 
-httpsServer.listen(port, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
