@@ -8,7 +8,8 @@ const jwt = require("jsonwebtoken");
 
 const generateAccessToken = require("./generateAccessToken");
 const util = require("util"); // To use promisify
-
+const https = require("https"); // Import the https module
+const fs = require("fs"); 
 const db = mysql.createPool({
   connectionLimit: 100,
   host: "127.0.0.1",
@@ -18,6 +19,10 @@ const db = mysql.createPool({
   database: "restaurant",
   port: "3306",
 });
+const sslOptions = {
+  key: fs.readFileSync("./domain.pem"),
+  cert: fs.readFileSync("./certificate.pem"),
+};
 const allowedOrigins = ["https://127.0.0.1:5173", "https://example2.com"];
 const corsOptions = {
   origin: allowedOrigins,  // Specify the allowed origin
@@ -74,7 +79,8 @@ app.get("/api/validate-token", (req, res) => {
     }
   });
 });
+const server = https.createServer(sslOptions, app);
 
-app.listen(port, () => {
+server.listen(443,'142.11.205.17', () => {
   console.log(`Example app listening on port ${port}`);
 });
