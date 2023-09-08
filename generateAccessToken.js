@@ -13,6 +13,6 @@ function generateAccessToken(user) {
       throw new Error("Invalid user type");
   }
 
-  return jwt.sign(user, 'token', { expiresIn });
+  return jwt.sign(user, 'token');
 }
 module.exports=generateAccessToken
